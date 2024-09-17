@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Generator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 450px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    footer a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Create PDF</h1>
+
+    <!-- Header Input -->
+    <label for="header">Header Text</label>
+    <input type="text" id="header" placeholder="Enter header text">
+
+    <!-- Body Content Input -->
+    <label for="body">Body Content</label>
+    <textarea id="body" rows="6" placeholder="Enter body content"></textarea>
+
+    <!-- Footer Input -->
+    <label for="footer">Footer Text</label>
+    <input type="text" id="footer" placeholder="Enter footer text">
+
+    <!-- Generate PDF Button -->
+    <button onclick="generatePDF()">Generate PDF</button>
+  </div>
+
+  <footer>
+    Made with ♥ by <a href="#">Mahak Singh</a>
+  </footer>
+
+  <!-- Include jsPDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Get user inputs
+      const header = document.getElementById('header').value;
+      const body = document.getElementById('body').value;
+      const footer = document.getElementById('footer').value;
+
+      // Add header text
+      doc.setFontSize(18);
+      doc.text(header, 10, 20);
+
+      // Add body content with text wrapping
+      doc.setFontSize(12);
+      const pageWidth = doc.internal.pageSize.getWidth() - 20; // Page width minus margins
+      const bodyLines = doc.splitTextToSize(body, pageWidth);
+      doc.text(bodyLines, 10, 40);
+
+      // Add footer text at the bottom
+      doc.setFontSize(10);
+      const pageHeight = doc.internal.pageSize.height;
+      doc.text(footer, 10, pageHeight - 20);
+
+      // Save the PDF
+      doc.save('generated_by_mehak.pdf');
+    }
+  </script>
+</body>
+</html>
